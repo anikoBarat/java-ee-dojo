@@ -5,7 +5,7 @@ import javax.persistence.*;
 @IdClass(LineItemKey.class)
 @Entity
 @Table(name = "jpa_order_lineitem")
-@NamedQueries({@NamedQueries(name = "findLineItemsByOrderId", query = "SELECT l FROM LineItem l " +
+@NamedQueries({@NamedQuery(name = "findLineItemsByOrderId", query = "SELECT l FROM LineItem l " +
         "WHERE l.customerOrder.orderId = :orderId " +
         "ORDER BY l.itemId")})
 public class LineItem {
@@ -20,17 +20,17 @@ public class LineItem {
     @Id
     @ManyToOne
     @JoinColumn(name = "orderId")
-    private order customerOrder;
+    private CustomerOrder order;
 
     public LineItem(int quantity, Product product, CustomerOrder order) {
         this.quantity = quantity;
         this.product = product;
-        this.customerOrder = customerOrder;
+        this.order = order;
         this.itemId = order.getNextId();
     }
 
-public LineItem(){}
-
+    public LineItem() {
+    }
 
 
     public int getItemId() {
@@ -57,13 +57,15 @@ public LineItem(){}
         this.product = product;
     }
 
-    public order getCustomerOrder() {
-        return customerOrder;
+    public CustomerOrder getCustomerOrder() {
+        return order;
     }
 
-    public void setCustomerOrder(order customerOrder) {
-        this.customerOrder = customerOrder;
-    };
+    public void setCustomerOrder(CustomerOrder order) {
+        this.order = order;
+    }
+
+    ;
 
 
     @Override
@@ -74,7 +76,6 @@ public LineItem(){}
                 ", product=" + product +
                 '}';
     }
-
 
 
 }
